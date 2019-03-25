@@ -10,7 +10,7 @@ description: |
   of the DICOM format and of the DICOM protocol
 
 grade: stable # must be 'stable' to release into candidate/stable channels
-confinement: devmode # use 'strict' once you have the right plugs and slots
+confinement: strict # use 'strict' once you have the right plugs and slots
 
 apps:
   orthanc:
@@ -33,6 +33,26 @@ parts:
     source-type: local
     stage-packages:
       - "libgdcm-tools"
+    build-packages:
+      - "build-essential"
+      - "unzip"
+      - "mercurial"
+      - "uuid-dev"
+      - "libcurl4-openssl-dev"
+      - "liblua5.1-0-dev"
+      - "libgtest-dev"
+      - "libpng-dev"
+      - "libsqlite3-dev"
+      - "libssl-dev"
+      - "libjpeg-dev"
+      - "zlib1g-dev"
+      - "libdcmtk2-dev"
+      - "libboost-all-dev"
+      - "libwrap0-dev"
+      - "libcharls-dev"
+      - "libjsoncpp-dev"
+      - "libpugixml-dev"
+      - "doxygen"
 
   standard-plugins:
     plugin: dump
@@ -42,4 +62,58 @@ parts:
     organize:
       "*.so" : share/orthanc/plugins/
 
+  orthanc-webviewer:
+    plugin: cmake
+    source: https://bitbucket.org/sjodogne/orthanc-webviewer/src
+    source-type: hg
+    source-branch: default
+    configflags:
+      - "-DSTATIC_BUILD=ON"
+      - "-DCMAKE_BUILD_TYPE=Release"
   
+  orthanc-databases-postgresql:
+    plugin: cmake
+    source: https://bitbucket.org/sjodogne/orthanc-databases/src/default/PostgreSQL/
+    source-type: hg
+    source-branch: default
+    source-subdir: PostgreSQL
+    configflags:
+      - "-DSTATIC_BUILD=ON"
+      - "-DCMAKE_BUILD_TYPE=Release"
+
+  orthanc-databases-mysql:
+    plugin: cmake
+    source: https://bitbucket.org/sjodogne/orthanc-databases/src/default/PostgreSQL/
+    source-type: hg
+    source-branch: default
+    source-subdir: MySQL
+    configflags:
+      - "-DSTATIC_BUILD=ON"
+      - "-DCMAKE_BUILD_TYPE=Release"
+
+  orthanc-transfers:
+    plugin: cmake
+    source: https://bitbucket.org/sjodogne/orthanc-transfers/src
+    source-type: hg
+    source-branch: default
+    configflags:
+      - "-DSTATIC_BUILD=ON"
+      - "-DCMAKE_BUILD_TYPE=Release"
+
+  orthanc-dicomweb:
+    plugin: cmake
+    source: https://bitbucket.org/sjodogne/orthanc-dicomweb/src
+    source-type: hg
+    source-branch: default
+    configflags: 
+      - "-DSTATIC_BUILD=ON"
+      - "-DCMAKE_BUILD_TYPE=Release"
+
+  orthanc-authorization:
+    plugin: cmake
+    source: https://bitbucket.org/osimis/orthanc-authorization/src
+    source-type: hg
+    source-branch: default
+    configflags: 
+      - "-DSTATIC_BUILD=ON"
+      - "-DCMAKE_BUILD_TYPE=Release"
